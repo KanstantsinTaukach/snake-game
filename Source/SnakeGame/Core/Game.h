@@ -3,13 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Types.h"
 
-/**
- * 
- */
-class SNAKEGAME_API Game
+namespace Snake
 {
-public:
-	Game();
-	~Game();
-};
+	class Grid;
+
+	class SNAKEGAME_API Game
+	{
+	public:
+		Game(const Settings& settings);
+
+	private:
+		const Settings c_settings;
+		TSharedPtr<Grid> m_grid;
+	};
+}
+
