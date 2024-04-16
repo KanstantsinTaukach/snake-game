@@ -27,4 +27,11 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
 
+private:
+	Snake::Dim Dim;
+	int32 CellSize;
+	FTransform GridOrigin;
+
+	void OnViewportResized(FViewport* Viewport, uint32 Val);
+
 };
