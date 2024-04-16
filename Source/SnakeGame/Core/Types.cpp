@@ -3,10 +3,3 @@
 
 #include "SnakeGame/Core/Types.h"
 
-Types::Types()
-{
-}
-
-Types::~Types()
-{
-}

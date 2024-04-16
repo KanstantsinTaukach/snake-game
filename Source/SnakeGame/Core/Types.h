@@ -23,9 +23,4 @@ namespace Snake
 		Dim gridSize;
 	};
 }
-class SNAKEGAME_API Types
-{
-public:
-	Types();
-	~Types();
-};
+
