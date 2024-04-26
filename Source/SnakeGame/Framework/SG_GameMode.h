@@ -5,9 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "SnakeGame/Core/Game.h"
+#include "Engine/DataTable.h"
 #include "SG_GameMode.generated.h"
 
 class ASG_Grid;
+class AExponentialHeightFog;
 
 UCLASS()
 class SNAKEGAME_API ASG_GameMode : public AGameModeBase
@@ -19,19 +21,32 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "10", ClampMax = "100"))
-	FIntPoint GridSize{ 10, 10 };
+	FIntPoint GridDims{ 10, 10 };
 
 	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "10", ClampMax = "100"))
-	int32 CellSize{ 10 };
+	uint32 CellSize{ 10 };
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASG_Grid> GridVisualClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Design")
+	UDataTable* ColorsTable;
+
+
+private:
+	UPROPERTY()
+	ASG_Grid* GridVisual;
+
+	UFUNCTION(Exec, Category = "Console command")
+	void NextColor();
+
+	UPROPERTY()
+	AExponentialHeightFog* Fog;
 
 private:
 	TUniquePtr<Snake::Game> Game;
-
-	UPROPERTY()
-	ASG_Grid* GridVisual;
+	int32 ColorTableIndex{ 0 };
 	
+	void UpdateColors();
+	void FindFog();
 };
