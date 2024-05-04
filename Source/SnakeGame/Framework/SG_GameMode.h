@@ -44,7 +44,7 @@ private:
 	AExponentialHeightFog* Fog;
 
 private:
-	TUniquePtr<Snake::Game> Game;
+	TUniquePtr<SnakeGame::Game> Game;
 	int32 ColorTableIndex{ 0 };
 	
 	void UpdateColors();
