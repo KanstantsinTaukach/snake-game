@@ -9,7 +9,6 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogWorldGrid, All, All);
 
-// Sets default values
 ASG_Grid::ASG_Grid()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -24,14 +23,12 @@ ASG_Grid::ASG_Grid()
 	GridMesh->SetupAttachment(Origin);
 }
 
-// Called when the game starts or when spawned
 void ASG_Grid::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
 void ASG_Grid::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -39,13 +36,13 @@ void ASG_Grid::Tick(float DeltaTime)
 
 }
 
-void ASG_Grid::SetModel(const TSharedPtr<SnakeGame::Grid>& Grid, uint32 InCellSize)
+void ASG_Grid::SetModel(const TSharedPtr<SnakeGame::Grid>& Grid, int32 InCellSize)
 {
-	if (!Grid.IsValid())
+	if (!Grid)
 	{
 		UE_LOG(LogWorldGrid, Fatal, TEXT("Grid is null, game aborted!"));
 	}
-	GridDim = Grid.Get()->dim();
+	GridDim = Grid->dim();
 	CellSize = InCellSize;
 	WorldWidth = GridDim.width * CellSize;
 	WorldHeight = GridDim.height * CellSize;
@@ -85,7 +82,7 @@ void ASG_Grid::DrawGrid()
 		return;
 	}
 
-	for (uint32 i = 0; i < GridDim.height + 1; ++i)
+	for (int32 i = 0; i < GridDim.height + 1; ++i)
 	{
 		const FVector StartLocation = GetActorLocation() + GetActorForwardVector() * CellSize * i;
 		const FVector EndLocation = StartLocation + GetActorRightVector() * WorldWidth;
@@ -93,7 +90,7 @@ void ASG_Grid::DrawGrid()
 		GetWorld()->LineBatcher->DrawLine(StartLocation, EndLocation, FLinearColor::Red, 1, 2.0f);
 	}
 
-	for (uint32 i = 0; i < GridDim.width + 1; ++i)
+	for (int32 i = 0; i < GridDim.width + 1; ++i)
 	{
 		const FVector StartLocation = GetActorLocation() + GetActorRightVector() * CellSize * i;
 		const FVector EndLocation = StartLocation + GetActorForwardVector() * WorldHeight;

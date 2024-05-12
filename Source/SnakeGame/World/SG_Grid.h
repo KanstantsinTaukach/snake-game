@@ -21,11 +21,9 @@ class SNAKEGAME_API ASG_Grid : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	ASG_Grid();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
@@ -35,10 +33,9 @@ protected:
 	UStaticMeshComponent* GridMesh;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void SetModel(const TSharedPtr<SnakeGame::Grid>& Grid, uint32 InCellSize);
+	void SetModel(const TSharedPtr<SnakeGame::Grid>& Grid, int32 InCellSize);
 
 	void UpdateColors(const FSnakeColors& Colors);
 
@@ -47,9 +44,9 @@ private:
 	UMaterialInstanceDynamic* GridMaterial;
 
 	SnakeGame::Dim GridDim;
-	uint32 CellSize;
-	uint32 WorldWidth;
-	uint32 WorldHeight;
+	int32 CellSize;
+	int32 WorldWidth;
+	int32 WorldHeight;
 
 	void DrawGrid();
 
