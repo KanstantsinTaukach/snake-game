@@ -21,6 +21,11 @@ namespace SnakeGame
 	private:
 		const Dim c_dim;
 		TArray<CellType> m_cells;
+		TMap<CellType, TArray<uint32>> m_indByType =
+		{
+			{CellType::Snake, {}},
+			{CellType::Wall, {}},
+		};
 
 		void initWalls();
 		FORCEINLINE int32 posToIndex(int32 x, int32 y) const;

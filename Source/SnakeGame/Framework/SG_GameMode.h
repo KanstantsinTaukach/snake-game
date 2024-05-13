@@ -46,6 +46,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Design")
 	UDataTable* ColorsTable;
+	//TObjectPtr<UDataTable> ColorsTable;
 		
 	UPROPERTY(EditDefaultsOnly, Category = "SnakeInput")
 	UInputAction* MoveForwardInputAction;
@@ -54,6 +55,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "SnakeInput")
 	UInputAction* MoveRightInputAction;
 	//TObjectPtr<UInputAction> MoveRightInputAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "SnakeInput")
+	UInputAction* ResetGameInputAction;
+	//TObjectPtr<UInputAction> ResetGameInputAction;
 
 	UPROPERTY(EditDefaultsOnly, Category = "SnakeInput")
 	UInputMappingContext* InputMapping;
@@ -77,6 +82,8 @@ private:
 	int32 ColorTableIndex{ 0 };
 	SnakeGame::Input SnakeInput{ 1, 0 };
 	
+	SnakeGame::Settings MakeSettings() const;
+
 	/**
 	* Updates Grid and ExponentialFog colours
 	* according to the ColorsTable property
@@ -88,4 +95,5 @@ private:
 	void SetupInput();
 	void OnMoveForward(const FInputActionValue& Value);
 	void OnMoveRight(const FInputActionValue& Value);
+	void OnGameReset(const FInputActionValue& Value);
 };

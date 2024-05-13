@@ -56,7 +56,17 @@ namespace SnakeGame
 		float gameSpeed{ 1.0f };
 	};
 
-	using TSnakeList = TDoubleLinkedList<Position>;
-	using TPositionPtr = TSnakeList::TDoubleLinkedListNode;
+	using TPositionPtr = TDoubleLinkedList<Position>::TDoubleLinkedListNode;
+
+	class TSnakeList : public TDoubleLinkedList<Position>
+	{
+	public:
+		void MoveTail(TPositionPtr* Tail, TPositionPtr* Head, const Position& Pos)
+		{
+			RemoveNode(Tail);
+			InsertNode(Pos, Head->GetNextNode());
+		}
+	};
+	
 }
 
