@@ -121,7 +121,7 @@ void ASG_GameMode::SetupInput()
 		return;
 	}
 
-	if (auto* PC = Cast<APlayerController>(GetWorld()->GetFirstPlayerController()))
+	if (auto* PC = GetWorld()->GetFirstPlayerController())
 	{
 		if (auto* InputSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 		{
@@ -139,7 +139,7 @@ void ASG_GameMode::SetupInput()
 void ASG_GameMode::OnMoveForward(const FInputActionValue& Value)
 {
 	const float InputValue = Value.Get<float>();
-	if (InputValue == 0.0)
+	if (InputValue == 0.0f)
 	{
 		return;
 	}
@@ -149,7 +149,7 @@ void ASG_GameMode::OnMoveForward(const FInputActionValue& Value)
 void ASG_GameMode::OnMoveRight(const FInputActionValue& Value)
 {
 	const float InputValue = Value.Get<float>();
-	if (InputValue == 0.0)
+	if (InputValue == 0.0f)
 	{
 		return;
 	}
@@ -164,7 +164,7 @@ void ASG_GameMode::OnGameReset(const FInputActionValue& Value)
 		check(Game.IsValid());
 		GridVisual->SetModel(Game->grid(), CellSize);
 		SnakeVisual->SetModel(Game->snake(), CellSize, Game->grid()->dim());
-		SnakeInput = SnakeGame::Input{ 1, 0 };
+		SnakeInput = SnakeGame::Input::Default;
 		NextColor();
 	}
 }
@@ -175,6 +175,6 @@ SnakeGame::Settings ASG_GameMode::MakeSettings() const
 	GS.gridDims = SnakeGame::Dim{ GridDims.X, GridDims.Y };
 	GS.gameSpeed = GameSpeed;
 	GS.snake.defaultSize = SnakeDefaultSize;
-	GS.snake.startPosition = SnakeGame::Position{ GridDims.X / 2 + 1, GridDims.Y / 2 + 1};
+	GS.snake.startPosition = SnakeGame::Grid::center(GridDims.X, GridDims.Y);
 	return GS;
 }
