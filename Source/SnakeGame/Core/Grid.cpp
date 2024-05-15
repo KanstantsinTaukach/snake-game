@@ -54,6 +54,7 @@ void Grid::printDebug()
 			case CellType::Empty: symbol = '0'; break;
 			case CellType::Wall: symbol = '*'; break;
 			case CellType::Snake: symbol = '_'; break;
+			case CellType::Food: symbol = '.'; break;
 			}
 			line.AppendChar(symbol).AppendChar(' ');
 		}
@@ -68,11 +69,22 @@ void Grid::update(const TPositionPtr* links, CellType cellType)
 	auto* link = links;
 	while (link)
 	{
-		const auto index = posToIndex(link->GetValue());
-		m_cells[index] = cellType;
-		m_indByType[cellType].Add(index);
+		updateInternal(link->GetValue(), cellType);
 		link = link->GetNextNode();
 	}
+}
+
+void Grid::update(const Position& position, CellType cellType)
+{
+	freeCellsByType(cellType);
+	updateInternal(position, cellType);
+}
+
+void Grid::updateInternal(const Position& position, CellType cellType)
+{
+	const auto index = posToIndex(position);
+	m_cells[index] = cellType;
+	m_indByType[cellType].Add(index);
 }
 
 void Grid::freeCellsByType(CellType cellType)
@@ -90,6 +102,29 @@ bool Grid::hitTest(const Position& position, CellType cellType) const
 	return m_cells[posToIndex(position)] == cellType;
 }
 
+Position Grid::randomEmptyPosition() const
+{
+	const int32 gridSize = c_dim.width * c_dim.height;
+	const int32 index = FMath::RandRange(0, gridSize - 1);
+	for (int32 i = index; i < gridSize; ++i)
+	{
+		if (m_cells[i] == CellType::Empty) {
+			return indexToPos(i);
+		}
+	}
+
+	for (int32 i = index; i > 0; --i)
+	{
+		if (m_cells[i] == CellType::Empty) {
+			return indexToPos(i);
+		}
+	}
+
+	UE_LOG(LogGrid, Error, TEXT("Empty cell doesn't exist"));
+	checkNoEntry();
+	return Position::Zero;
+}
+
 int32 Grid::posToIndex(int32 x, int32 y) const
 {
 	return x + y * c_dim.width;
@@ -100,3 +135,7 @@ int32 Grid::posToIndex(const Position& position) const
 	return posToIndex(position.x, position.y);
 }
 
+Position Grid::indexToPos(int32 index) const
+{
+	return Position(index % c_dim.width, index / c_dim.width);
+}

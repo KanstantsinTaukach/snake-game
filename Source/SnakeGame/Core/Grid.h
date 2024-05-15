@@ -16,7 +16,10 @@ namespace SnakeGame
 
 		void printDebug();
 		void update(const TPositionPtr* links, CellType cellType);
+		void update(const  Position& position, CellType cellType);
 		bool hitTest(const Position& position, CellType cellType) const;
+
+		UE_NODISCARD Position randomEmptyPosition() const;
 
 		static Position center(int32 width, int32 height)
 		{
@@ -30,12 +33,15 @@ namespace SnakeGame
 		{
 			{CellType::Snake, {}},
 			{CellType::Wall, {}},
+			{CellType::Food, {}},
 		};
 
 		void initWalls();
 		FORCEINLINE int32 posToIndex(int32 x, int32 y) const;
 		FORCEINLINE int32 posToIndex(const Position& position) const;
+		FORCEINLINE Position indexToPos(int32 index) const;
 		void freeCellsByType(CellType cellType);
+		void updateInternal(const  Position& position, CellType cellType);
 	};
 }
 

@@ -6,6 +6,7 @@
 #include "SnakeGame/Core/Grid.h"
 #include "World/SG_Grid.h"
 #include "World/SG_Snake.h"
+#include "World/SG_Food.h"
 #include "World/SG_WorldTypes.h"
 #include "Framework/SG_Pawn.h"
 #include "Engine/ExponentialHeightFog.h"
@@ -36,6 +37,11 @@ void ASG_GameMode::StartPlay()
 	SnakeVisual = GetWorld()->SpawnActorDeferred<ASG_Snake>(SnakeVisualClass, GridOrigin);
 	SnakeVisual->SetModel(Game->snake(), CellSize, Game->grid()->dim());
 	SnakeVisual->FinishSpawning(GridOrigin);
+
+	// Init world food
+	FoodVisual = GetWorld()->SpawnActorDeferred<ASG_Food>(FoodVisualClass, GridOrigin);
+	FoodVisual->SetModel(Game->food(), CellSize, Game->grid()->dim());
+	FoodVisual->FinishSpawning(GridOrigin);
 
 	// Set pawn location fitting grid in viewport
 	auto* PC = GetWorld()->GetFirstPlayerController();
@@ -73,11 +79,9 @@ void ASG_GameMode::UpdateColors()
 	const auto* ColorSet = ColorsTable->FindRow<FSnakeColors>(RowName, {});
 	if (ColorSet)
 	{
-		// Update gird
 		GridVisual->UpdateColors(*ColorSet);
-
-		// Update snake
 		SnakeVisual->UpdateColors(*ColorSet);
+		FoodVisual->UpdateColor(ColorSet->FoodColor);
 
 		// Update scene ambient color via fog
 		if (Fog && Fog->GetComponent())
@@ -164,6 +168,7 @@ void ASG_GameMode::OnGameReset(const FInputActionValue& Value)
 		check(Game.IsValid());
 		GridVisual->SetModel(Game->grid(), CellSize);
 		SnakeVisual->SetModel(Game->snake(), CellSize, Game->grid()->dim());
+		FoodVisual->SetModel(Game->food(), CellSize, Game->grid()->dim());
 		SnakeInput = SnakeGame::Input::Default;
 		NextColor();
 	}

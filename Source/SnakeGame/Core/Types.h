@@ -45,7 +45,8 @@ namespace SnakeGame
 	{
 		Empty = 0,
 		Wall,
-		Snake
+		Snake,
+		Food
 	};
 
 	struct Settings
