@@ -16,6 +16,7 @@ namespace SnakeGame
 	struct Position
 	{
 		Position(int32 inX, int32 inY) : x(inX), y(inY) {}
+		Position(const Position& position = Position::Zero) : x(position.x), y(position.y) {};
 		int32 x;
 		int32 y;
 

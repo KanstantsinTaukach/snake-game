@@ -102,27 +102,29 @@ bool Grid::hitTest(const Position& position, CellType cellType) const
 	return m_cells[posToIndex(position)] == cellType;
 }
 
-Position Grid::randomEmptyPosition() const
+bool Grid::randomEmptyPosition(Position& position) const
 {
 	const int32 gridSize = c_dim.width * c_dim.height;
 	const int32 index = FMath::RandRange(0, gridSize - 1);
 	for (int32 i = index; i < gridSize; ++i)
 	{
-		if (m_cells[i] == CellType::Empty) {
-			return indexToPos(i);
+		if (m_cells[i] == CellType::Empty) 
+		{
+			position = indexToPos(i);
+			return true;
 		}
 	}
 
 	for (int32 i = index; i > 0; --i)
 	{
-		if (m_cells[i] == CellType::Empty) {
-			return indexToPos(i);
+		if (m_cells[i] == CellType::Empty) 
+		{
+			position = indexToPos(i);
+			return true;
 		}
 	}
-
-	UE_LOG(LogGrid, Error, TEXT("Empty cell doesn't exist"));
-	checkNoEntry();
-	return Position::Zero;
+		
+	return false;
 }
 
 int32 Grid::posToIndex(int32 x, int32 y) const
