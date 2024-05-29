@@ -83,3 +83,10 @@ void ASG_Snake::Tick(float DeltaTime)
 	}
 }
 
+void ASG_Snake::Explode()
+{
+	for (auto* LinkActor : SnakeLinks)
+	{
+		LinkActor->Explode();
+	}
+}

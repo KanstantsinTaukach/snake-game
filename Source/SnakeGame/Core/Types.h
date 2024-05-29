@@ -26,7 +26,11 @@ namespace SnakeGame
 			y += rhs.y;
 			return *this;
 		}
-		static Position Zero;
+		FORCEINLINE bool operator!=(const Position& rhs) const
+		{
+			return (x != rhs.x && y != rhs.y);
+		}
+		static const Position Zero;
 	};
 
 	struct Input
@@ -39,7 +43,7 @@ namespace SnakeGame
 			return (x == -rhs.x && x != 0) || (y == -rhs.y && y != 0);
 		}
 
-		static Input Default;
+		static const Input Default;
 	};
 
 	enum class CellType
@@ -73,5 +77,13 @@ namespace SnakeGame
 		}
 	};
 	
+	enum class GameplayEvent
+	{
+		GameOver = 0,
+		GameCompleted,
+		FoodTaken
+	};
+
+	using GameplayEventCallback = TFunction<void(GameplayEvent)>;
 }
 

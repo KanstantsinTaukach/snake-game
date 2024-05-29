@@ -21,6 +21,8 @@ public:
 	void SetModel(const TSharedPtr <SnakeGame::Snake>& InSnake, int32 InCellSize, const SnakeGame::Dim& InDims);
 	void UpdateColors(const FSnakeColors& Colors);
 
+	void Explode();
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<ASG_SnakeLink> SnakeHeadClass;
