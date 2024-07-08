@@ -27,6 +27,7 @@ void ASG_Food::SetModel(const TSharedPtr<SnakeGame::Food>& InFood, int32 InCellS
 	Dims = InDims;
 
 	SnakeGame::WorldUtils::ScaleMesh(FoodMesh, FVector(CellSize));
+	SetActorHiddenInGame(false);
 }
 
 void ASG_Food::UpdateColor(const FLinearColor& Color)
@@ -61,4 +62,9 @@ FVector ASG_Food::GetFoodWorldLocation() const
 		return FVector::ZeroVector;
 	}
 	return SnakeGame::WorldUtils::LinkPositionToVector(Food.Pin()->position(), CellSize, Dims);
+}
+
+void ASG_Food::Hide()
+{
+	SetActorHiddenInGame(true);
 }
