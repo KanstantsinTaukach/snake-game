@@ -23,21 +23,24 @@ class SNAKEGAME_API ASG_GameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	ASG_GameMode();
 	virtual void StartPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
 protected:
-	ASG_GameMode();
-	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "10", ClampMax = "100"), Category = "Settings")
+	UPROPERTY(EditDefaultsOnly, Category = "Settings")
+	bool bOverrideUserSettings{ false };
+	
+	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "10", ClampMax = "100", EditCondition = "bOverrideUserSettings", EditConditionHides), Category = "Settings")
 	FIntPoint GridDims{ 10, 10 };
 
-	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "10", ClampMax = "100"), Category = "Settings")
+	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "10", ClampMax = "100", EditCondition = "bOverrideUserSettings", EditConditionHides), Category = "Settings")
 	int32 CellSize{ 10 };
 
-	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "4", ClampMax = "10"), Category = "Settings")
+	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "4", ClampMax = "10", EditCondition = "bOverrideUserSettings", EditConditionHides), Category = "Settings")
 	int32 SnakeDefaultSize{ 5 };
 
-	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "0.1", ClampMax = "10"), Category = "Settings")
+	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "0.1", ClampMax = "10", EditCondition = "bOverrideUserSettings", EditConditionHides), Category = "Settings")
 	float GameSpeed{ 1.0f };
 
 	UPROPERTY(EditDefaultsOnly, Category = "Design")
