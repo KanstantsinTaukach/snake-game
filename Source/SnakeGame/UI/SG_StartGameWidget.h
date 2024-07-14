@@ -19,6 +19,9 @@ protected:
 	UButton* StartGameButton;
 
 	UPROPERTY(meta = (BindWidget))
+	UButton* CloseGameButton;
+
+	UPROPERTY(meta = (BindWidget))
 	UComboBoxString* GameSpeedComboBox;
 
 	UPROPERTY(meta = (BindWidget))
@@ -33,6 +36,9 @@ protected:
 private:
 	UFUNCTION()
 	void OnStartGame();	
+
+	UFUNCTION()
+	void OnCloseGame();
 
 	UFUNCTION()
 	void OnSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
