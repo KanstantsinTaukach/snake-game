@@ -22,13 +22,12 @@ Game::Game(const Settings& settings, const IPositionRandomizerPtr& randomizer): 
 
 void Game::update(float deltaSeconds, const Input& input)
 {
-	if (m_gameOver || !updateTime(deltaSeconds))
-	{
-		return;
-	}
-	move(input);
+	if (m_gameOver || !updateTime(deltaSeconds)) { return; }
 
-	if (died())
+	const auto prevTailPosition = m_snake->tail();
+	m_snake->move(input);
+
+	if (died(prevTailPosition))
 	{
 		m_gameOver = true;
 		dispatchEvent(GameplayEvent::GameOver);
@@ -42,17 +41,13 @@ void Game::update(float deltaSeconds, const Input& input)
 		dispatchEvent(GameplayEvent::FoodTaken);
 		generateFood();
 	}
-}
 
-void Game::move(const Input& input)
-{
-	m_snake->move(input);
 	updateGrid();
 }
 
 void Game::updateGrid()
 {
-	m_grid->update(m_snake->body(), CellType::Snake);
+	m_grid->update(m_snake->links().GetHead(), CellType::Snake);
 	// m_grid->printDebug();
 }
 
@@ -68,10 +63,11 @@ bool SnakeGame::Game::updateTime(float deltaSeconds)
 	return true;
 }
 
-bool SnakeGame::Game::died() const
+bool SnakeGame::Game::died(const Position& prevTailPosition) const
 {
-	return m_grid->hitTest(m_snake->head(), CellType::Wall) ||
-		m_grid->hitTest(m_snake->head(), CellType::Snake);
+	if (m_grid->hitTest(m_snake->head(), CellType::Wall)) { return true; }
+	if (m_snake->head() == prevTailPosition) { return false; }
+	return m_grid->hitTest(m_snake->head(), CellType::Snake);
 }
 
 void Game::generateFood()

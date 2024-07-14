@@ -23,21 +23,28 @@ namespace SnakeGame
 		*/
 		TSharedPtr<Grid> grid() const { return m_grid; }
 
+		/**
+		*Returns the pointer to the snake object
+		* @return TSharedPtr<Snake>  pointer to the snake object
+		*/
 		TSharedPtr<Snake> snake() const { return m_snake; }
 
+		/**
+		* Returns the pointer to the food object
+		* @return TSharedPtr<Food>  pointer to the food object
+		*/
 		TSharedPtr<Food> food() const { return m_food; }
 
+		/**
+		* Updates game
+		* @param deltaSeconds  delta time
+		* @param input  user input
+		*/
 		void update(float deltaSeconds, const Input& input);
 
-		int32 score() const
-		{
-			return m_score;
-		}
+		int32 score() const	{ return m_score; }
 
-		float gameTime() const
-		{
-			return m_gameTime;
-		}
+		float gameTime() const { return m_gameTime; }
 
 		void subscribeOnGameplayEvent(GameplayEventCallback callback);
 				
@@ -54,10 +61,9 @@ namespace SnakeGame
 
 		TArray<GameplayEventCallback> m_gameplayEventCallbacks;
 
-		void move(const Input& input);
 		void updateGrid();
 		bool updateTime(float deltaSeconds);
-		bool died() const;
+		bool died(const Position& prevTailPosition) const;
 
 		void generateFood();
 		bool foodTaken() const;
@@ -66,4 +72,3 @@ namespace SnakeGame
 
 	};
 }
-

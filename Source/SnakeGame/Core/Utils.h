@@ -18,31 +18,29 @@ namespace SnakeGame
 	{
 		virtual bool generatePosition(const Dim& dim, const TArray<CellType>& cells, Position& position) const override
 		{
-			const int32 gridSize = dim.width * dim.height;
-			const int32 index = FMath::RandRange(0, gridSize - 1);
-			for (int32 i = index; i < gridSize; ++i)
-			{
-				if (cells[i] == CellType::Empty)
-				{
-					position = indexToPos(i, dim);
-					if (position != Position::Zero)
-					{
-						return true;
-					}
-				}
-			}
+			const int32 startX = FMath::RandRange(1, dim.width - 2);
+			const int32 startY = FMath::RandRange(1, dim.height - 2);
+			Position randomPosition = { startX, startY };
 
-			for (int32 i = index; i > 0; --i)
+			do
 			{
-				if (cells[i] == CellType::Empty)
+				const int32 currentIndex = posToIndex(randomPosition.x, randomPosition.y, dim);
+				if (cells[currentIndex] == CellType::Empty)
 				{
-					position = indexToPos(i, dim);
-					if (position != Position::Zero)
+					position = randomPosition;
+					return true;
+				}
+
+				if (++randomPosition.x > dim.width - 2)
+				{
+					randomPosition.x = 1;
+					if (++randomPosition.y > dim.height - 2)
 					{
-						return true;
+						randomPosition.y = 1;
 					}
 				}
-			}
+			} while (randomPosition.x != startX || randomPosition.y != startY);
+
 			return false;
 		}
 
@@ -50,6 +48,10 @@ namespace SnakeGame
 		FORCEINLINE Position indexToPos(int32 index, const Dim& dim) const
 		{
 			return Position(index % dim.width, index / dim.width);
+		}
+		FORCEINLINE int32 posToIndex(int32 x, int32 y, const Dim& dim) const
+		{
+			return x + y * dim.width;
 		}
 	};
 

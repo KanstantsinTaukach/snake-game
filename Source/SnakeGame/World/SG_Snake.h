@@ -9,6 +9,7 @@
 #include "SG_Snake.generated.h"
 
 class ASG_SnakeLink;
+class USG_ObjectPool;
 
 UCLASS()
 class SNAKEGAME_API ASG_Snake : public AActor
@@ -22,11 +23,8 @@ public:
 	void UpdateColors(const FSnakeColors& Colors);
 
 	void Explode();
-
+	
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	TSubclassOf<ASG_SnakeLink> SnakeHeadClass;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TSubclassOf<ASG_SnakeLink> SnakeLinkClass;
 
@@ -41,4 +39,9 @@ private:
 
 	UPROPERTY()
 	TArray<ASG_SnakeLink*> SnakeLinks;
+
+	UPROPERTY()
+	USG_ObjectPool* SnakeObjectPool{ nullptr };
+
+	void InitObjectPool();
 };

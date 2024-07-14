@@ -30,6 +30,10 @@ namespace SnakeGame
 		{
 			return (x != rhs.x && y != rhs.y);
 		}
+		FORCEINLINE bool operator==(const Position& rhs) const
+		{
+			return (x == rhs.x && y == rhs.y);
+		}
 		static const Position Zero;
 	};
 
